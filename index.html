@@ -285,6 +285,8 @@
                     
                     // Update Sub-Step Text
                     const subSpan = document.getElementById(`progress-sub-${stepIdx}-${subIdx}`);
+                    const subBar = document.getElementById(`progress-bar-${stepIdx}-${subIdx}`);
+
                     if (subSpan) {
                         subSpan.textContent = `(${subSolved}/${subTotal})`;
                         // Highlight if complete
@@ -296,15 +298,24 @@
                             subSpan.classList.add('text-neutral-400');
                         }
                     }
-                    
+                    if(subBar) {
+                        const subPercent = subTotal === 0 ? 0 : (subSolved / subTotal) * 100;
+                        subBar.style.width = `${subPercent}%`;
+                    }
                     stepSolved += subSolved;
                     stepTotal += subTotal;
                 });
                 
                 // Update Step Text
                 const stepSpan = document.getElementById(`progress-step-${stepIdx}`);
+                const stepBar = document.getElementById(`progress-bar-${stepIdx}`);
+
                 if (stepSpan) {
                     stepSpan.textContent = `${stepSolved}/${stepTotal}`;
+                }
+                if(stepBar) {
+                    const stepPercent = stepTotal === 0 ? 0 : (stepSolved / stepTotal) * 100;
+                    stepBar.style.width = `${stepPercent}%`;
                 }
                 
                 globalSolved += stepSolved;
@@ -406,13 +417,17 @@
                         <div>
                             <h3 class="font-bold text-lg text-neutral-900 dark:text-white">${step.step_title}</h3>
                             <div class="flex items-center gap-2 mt-0.5">
-                                <p class="text-xs text-neutral-500 font-medium dark:text-neutral-400">${step.sub_steps.length} Sub-Topics</p>
-                                <span class="text-xs text-neutral-300 dark:text-neutral-600">•</span>
-                                <span id="progress-step-${stepIdx}" class="text-xs font-mono font-medium text-neutral-500 dark:text-neutral-400">0/0</span>
+                                <p class="text-xs text-neutral-500 font-medium dark:text-neutral-400">${step.sub_steps.length} Sub-Topics</p>                                
                             </div>
                         </div>
                     </div>
-                    <i id="icon-step-${stepIdx}" class="fa-solid fa-chevron-down text-neutral-300 transition-transform duration-300 dark:text-neutral-500"></i>
+                    <div class="flex items-center space-x-2">
+                        <span id="progress-step-${stepIdx}" class="text-xs font-mono font-medium text-neutral-500 dark:text-neutral-400">0/0</span>
+                        <div class="w-24 sm:w-30 h-2 bg-neutral-100 rounded-full overflow-hidden border border-neutral-200 dark:bg-neutral-800 dark:border-neutral-700">
+                            <div id="progress-bar-${stepIdx}" class="h-full bg-orange-500 w-0 transition-all duration-500 ease-out"></div>
+                        </div>
+                        <i id="icon-step-${stepIdx}" class="fa-solid fa-chevron-down text-neutral-300 transition-transform duration-300 dark:text-neutral-500"></i>
+                    </div>
                 `;
 
                 // 3. Sub-Steps Container (Hidden by default)
@@ -439,7 +454,12 @@
                             <span class="font-semibold text-neutral-700 dark:text-neutral-200">${subStep.sub_step_title}</span>
                             <span id="progress-sub-${stepIdx}-${subIdx}" class="text-xs text-neutral-400 font-mono ml-1"></span>
                         </div>
-                        <i id="icon-sub-${stepIdx}-${subIdx}" class="fa-solid fa-plus text-xs text-neutral-400 transition-transform duration-300"></i>
+                        <div class="flex items-center space-x-2">
+                            <div class="w-24 sm:w-30 h-2 bg-neutral-100 rounded-full overflow-hidden border border-neutral-200 dark:bg-neutral-800 dark:border-neutral-700">
+                                <div id="progress-bar-${stepIdx}-${subIdx}" class="h-full bg-orange-500 w-0 transition-all duration-500 ease-out"></div>
+                            </div>
+                            <i id="icon-sub-${stepIdx}-${subIdx}" class="fa-solid fa-plus text-xs text-neutral-400 transition-transform duration-300"></i>
+                        </div>
                     `;
 
                     // Problems Container (The "Real Topics")
