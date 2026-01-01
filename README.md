@@ -21,8 +21,6 @@ https://aayushg1007.github.io/striversClone/
 
 - `index.html`: Main dashboard UI and logic
 - `data.js`: Course data (curriculum JSON)
-- `dashnew.html`: Optional or legacy dashboard version
-- `README.md`: Project documentation
 
 ## Customization
 
